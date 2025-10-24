@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JHA Form Demo: Authentic Data Collection</title>
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light gray background */
+            font-family: Arial, sans-serif;
+        }
+        .form-card {
+            border: 1px solid #dee2e6;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+        /* Custom styles for the section headers to mimic corporate docs */
+        .section-header {
+            background-color: #e9ecef;
+            border-bottom: 3px solid #007bff;
+            padding: 1rem;
+            margin-bottom: 0;
+            border-radius: .25rem .25rem 0 0;
+            font-weight: bold;
+        }
+        .step-ack-checkbox {
+            margin-top: 0.25rem;
+            margin-right: 0.5rem;
+        }
+        /* Custom validation styles */
+        .is-invalid-custom {
+            border-color: #dc3545 !important;
+        }
+        .validation-error {
+            font-size: 0.875em;
+            color: #dc3545;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-lg py-5">
+        <div id="app" class="card form-card">
+            <!-- use  cityLandscape.jpg as the background image with an overlay -->
+            <div class="position-relative">
+                <img src="./images/cityLandscape.jpg" alt="City Landscape" class="img-fluid" style="border-radius: .25rem .25rem 0 0; width: 100%; height: 200px; object-fit: cover;">
+                <div class="overlay position-absolute top-0 start-0 w-100" style="height: 200px; background-color: #114C94; opacity: 0.5;">
+                    <!-- Centered Title -->
+                    <h3 class="text-white position-absolute top-50 start-50 translate-middle" style="font-weight: bold; font-size: 2.75rem; min-width: 300px; text-align: center; text-shadow: 2px 2px 4px rgba(0,0,0,0.7);">
+                        Job Hazard Analysis (JHA) Form
+                    </h3>
+                </div>
+            </div>
+
+            <div class="card-body p-4 p-md-5">
+                <p class="text-muted mb-4">Review all hazards and protective measures before proceeding with the task. This form auto-saves your progress.</p>
+                
+                <!-- Status Messages & Auto-Save Indicator -->
+                <div id="message-box" class="alert hidden" role="alert" style="display: none;"></div>
+                <div id="auto-save-status" class="text-secondary small mb-4 d-flex align-items-center">
+                    <i class="fa-solid fa-floppy-disk text-success me-2"></i>
+                    <span id="save-text">Draft loaded or ready to save...</span>
+                </div>
+
+                <form id="jha-form">
+
+                    <!-- Project Identification Section -->
+                    <section class="mb-5 card">
+                        <h2 class="section-header h5">Project Identification</h2>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="project_name" class="form-label">Project Name / Code <span class="text-danger">*</span></label>
+                                    <input type="text" id="project_name" name="project_name" required class="form-control" placeholder="Job Code / Name">
+                                    <p class="validation-error hidden" style="display: none;">Required field.</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="project_title" class="form-label">Job / Task Title <span class="text-danger">*</span></label>
+                                    <input type="text" id="project_title" name="project_title" required class="form-control" placeholder="Title of Job / Task">
+                                    <p class="validation-error hidden" style="display: none;">Required field.</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="title_revision" class="form-label">Revision</label>
+                                    <input type="text" id="title_revision" name="title_revision" class="form-control" placeholder="Revision #">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 1. PPE Section -->
+                    <section class="mb-5 card border-primary">
+                        <h2 class="section-header h5 bg-primary-subtle text-primary border-primary border-3 border-bottom">1. Recommended Personal Protective Equipment (PPE)</h2>
+                        <div class="card-body">
+                            <p class="text-muted small">Check all equipment required to safely perform the job.</p>
+                            <div class="row row-cols-2 row-cols-sm-4 g-3">
+                                <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" name="ppe_head" id="head_protection"><label class="form-check-label" for="head_protection">Head Protection</label></div></div>
+                                <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" name="ppe_foot" id="foot_protection"><label class="form-check-label" for="foot_protection">Foot Protection</label></div></div>
+                                <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" name="ppe_eye" id="eye_protection"><label class="form-check-label" for="eye_protection">Eye Protection</label></div></div>
+                                <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" name="ppe_hearing" id="hearing_protection"><label class="form-check-label" for="hearing_protection">Hearing Protection</label></div></div>
+                                
+                                <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" name="ppe_hand" id="hand_protection"><label class="form-check-label" for="hand_protection">Hand Protection</label></div></div>
+                                <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" name="ppe_fall" id="fall_protection"><label class="form-check-label" for="fall_protection">Fall Protection</label></div></div>
+                                <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" name="ppe_respiratory" id="respitory_protection"><label class="form-check-label" for="respitory_protection">Respiratory Protection</label></div></div>
+                                <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" name="ppe_other" id="other_ppe"><label class="form-check-label" for="other_ppe">Other PPE</label></div></div>
+                            </div>
+                        </div>
+                    </section>
+            
+                    <!-- 2. Hazard Identification Section -->
+                    <section class="mb-5 card border-danger">
+                        <h2 class="section-header h5 bg-danger-subtle text-danger border-danger border-3 border-bottom">2. Hazard Identification</h2>
+                        <div class="card-body">
+                            <p class="text-muted small">Check all potential hazards present on the job site.</p>
+                            <div class="row row-cols-2 row-cols-sm-4 g-3">
+                                <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" name="hazard_elevated_work" id="hazard_elevated_work" title="Elevated Work"><label class="form-check-label" for="hazard_elevated_work">Elevated Work</label></div></div>
+                                <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" name="hazard_electrical_lv" id="hazard_electrical_lv" title="Electrical LV/HV"><label class="form-check-label" for="hazard_electrical_lv">Electrical LV/HV</label></div></div>
+                                <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" name="hazard_slippery_surface" id="hazard_slippery_surface" title="Slippery Surface"><label class="form-check-label" for="hazard_slippery_surface">Slippery Surface</label></div></div>
+                                <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" name="hazard_rf_exposure" id="hazard_rf_exposure" title="RF Exposure"><label class="form-check-label" for="hazard_rf_exposure">RF Exposure</label></div></div>
+                                <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" name="hazard_chemicals" id="hazard_chemicals" title="Chemicals"><label class="form-check-label" for="hazard_chemicals">Chemicals</label></div></div>
+                                <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" name="hazard_trip_hazards" id="hazard_trip_hazards" title="Trip Hazards"><label class="form-check-label" for="hazard_trip_hazards">Trip Hazards</label></div></div>
+                                <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" name="hazard_falling_objects" id="hazard_falling_objects" title="Falling Objects"><label class="form-check-label" for="hazard_falling_objects">Falling Objects</label></div></div>
+                                <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" name="hazard_fire_potential" id="hazard_fire_potential" title="Fire Potential"><label class="form-check-label" for="hazard_fire_potential">Fire Potential</label></div></div>
+                                <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" name="hazard_traffic" id="hazard_traffic" title="Traffic"><label class="form-check-label" for="hazard_traffic">Traffic</label></div></div>
+                                <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" name="hazard_power_tools" id="hazard_power_tools" title="Power Tools"><label class="form-check-label" for="hazard_power_tools">Power Tools</label></div></div>
+                                <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" name="hazard_high_noise" id="hazard_high_noise" title="High Noise"><label class="form-check-label" for="hazard_high_noise">High Noise</label></div></div>
+                                <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" name="hazard_other" id="hazard_other" title="Other hazard (specify in notes)"><label class="form-check-label" for="hazard_other">Other (specify in notes)</label></div></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 3. JHA Main Steps Section -->
+                    <section class="mb-5 card border-success">
+                        <h2 class="section-header h5 bg-success-subtle text-success border-success border-3 border-bottom">3. Job Steps, Hazards, and Controls <span class="small">(Check to Acknowledge)</span></h2>
+                        <div class="card-body p-3">
+                            <div class="list-group">
+                                
+                                <!-- Job Step 1: Driving and Parking -->
+                                <div class="list-group-item list-group-item-action d-flex flex-column align-items-start p-3 mb-3 border border-3 border-success-subtle">
+                                    <div class="d-flex w-100 justify-content-between align-items-center mb-2">
+                                        <h3 class="h6 mb-0 text-dark d-flex align-items-center">
+                                            <input type="checkbox" name="step_driving" id="step_driving" class="form-check-input step-ack-checkbox" required title="Acknowledge Driving and Parking hazards">
+                                            <label for="step_driving" class="fw-bold mb-0 ms-2">Driving and Parking (Acknowledgement Required)</label>
+                                        </h3>
+                                    </div>
+                                    <div class="row w-100 mt-2">
+                                        <div class="col-md-6">
+                                            <p class="fw-semibold text-danger small mb-1">Hazards Present:</p>
+                                            <ul class="list-unstyled small text-muted">
+                                                <li><i class="fa-solid fa-circle-xmark me-1 text-danger"></i> Vehicle accident resulting in personal injury</li>
+                                                <li><i class="fa-solid fa-circle-xmark me-1 text-danger"></i> Criminal activity</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="fw-semibold text-success small mb-1">Correct and Safe Procedures:</p>
+                                            <ul class="list-unstyled small text-muted">
+                                                <li><i class="fa-solid fa-circle-check me-1 text-success"></i> Wear seat/shoulder belt(s) at all times.</li>
+                                                <li><i class="fa-solid fa-circle-check me-1 text-success"></i> Lock vehicle while unattended; do not leave tools in plain sight.</li>
+                                                <li><i class="fa-solid fa-circle-check me-1 text-success"></i> Park in well-lighted areas during night-time hours.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Job Step 2: Use of Ladder -->
+                                <div class="list-group-item list-group-item-action d-flex flex-column align-items-start p-3 mb-3 border border-3 border-success-subtle">
+                                    <div class="d-flex w-100 justify-content-between align-items-center mb-2">
+                                        <h3 class="h6 mb-0 text-dark d-flex align-items-center">
+                                            <input type="checkbox" name="step_ladder" id="step_ladder" class="form-check-input step-ack-checkbox" required title="Acknowledge Ladder use hazards">
+                                            <label for="step_ladder" class="fw-bold mb-0 ms-2">Use of Ladder (Acknowledgement Required)</label>
+                                        </h3>
+                                    </div>
+                                    <div class="row w-100 mt-2">
+                                        <div class="col-md-6">
+                                            <p class="fw-semibold text-danger small mb-1">Hazards Present:</p>
+                                            <ul class="list-unstyled small text-muted">
+                                                <li><i class="fa-solid fa-circle-xmark me-1 text-danger"></i> Falls and Cuts</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="fw-semibold text-success small mb-1">Correct and Safe Procedures:</p>
+                                            <ul class="list-unstyled small text-muted">
+                                                <li><i class="fa-solid fa-circle-check me-1 text-success"></i> Set ladder on solid, level surfaces, at a 75 degree angle.</li>
+                                                <li><i class="fa-solid fa-circle-check me-1 text-success"></i> Never stand on the top two steps of any step ladder.</li>
+                                                <li><i class="fa-solid fa-circle-check me-1 text-success"></i> Always face the ladder, grasp side rails, and take one step at a time.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Job Step 3: Rooftop Work -->
+                                <div class="list-group-item list-group-item-action d-flex flex-column align-items-start p-3 border border-3 border-success-subtle">
+                                    <div class="d-flex w-100 justify-content-between align-items-center mb-2">
+                                        <h3 class="h6 mb-0 text-dark d-flex align-items-center">
+                                            <input type="checkbox" name="step_rooftop" id="step_rooftop" class="form-check-input step-ack-checkbox" required title="Acknowledge Rooftop work hazards">
+                                            <label for="step_rooftop" class="fw-bold mb-0 ms-2">Rooftop Work (Acknowledgement Required)</label>
+                                        </h3>
+                                    </div>
+                                    <div class="row w-100 mt-2">
+                                        <div class="col-md-6">
+                                            <p class="fw-semibold text-danger small mb-1">Hazards Present:</p>
+                                            <ul class="list-unstyled small text-muted">
+                                                <li><i class="fa-solid fa-circle-xmark me-1 text-danger"></i> Falls from Heights, RF Exposure, Weather Exposure</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="fw-semibold text-success small mb-1">Correct and Safe Procedures:</p>
+                                            <ul class="list-unstyled small text-muted">
+                                                <li><i class="fa-solid fa-circle-check me-1 text-success"></i> Use fall protection for work 6' or more from an edge.</li>
+                                                <li><i class="fa-solid fa-circle-check me-1 text-success"></i> Wear RF exposure monitor.</li>
+                                                <li><i class="fa-solid fa-circle-check me-1 text-success"></i> Maintain 15' from rooftop edge.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Additional Steps Section -->
+                    <div class="mb-5 p-4 bg-light rounded border">
+                        <label for="additional_steps" class="form-label h6 text-dark mb-3">Add any Additional Job Steps as Necessary (Optional)</label>
+                        <div class="row g-3">
+                            <div class="col-12"><div class="row g-3"><div class="col-md-4"><input type="text" name="add_step_1_job" class="form-control" placeholder="Job Step"></div><div class="col-md-4"><input type="text" name="add_step_1_hazard" class="form-control" placeholder="Hazard"></div><div class="col-md-4"><input type="text" name="add_step_1_procedure" class="form-control" placeholder="Safe Procedure"></div></div></div>
+                            <div class="col-12"><div class="row g-3"><div class="col-md-4"><input type="text" name="add_step_2_job" class="form-control" placeholder="Job Step"></div><div class="col-md-4"><input type="text" name="add_step_2_hazard" class="form-control" placeholder="Hazard"></div><div class="col-md-4"><input type="text" name="add_step_2_procedure" class="form-control" placeholder="Safe Procedure"></div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Final Acknowledgement -->
+                    <div class="mb-5 p-4 bg-info-subtle border border-info rounded">
+                        <div class="form-check">
+                            <input type="checkbox" name="final_acknowledgement" required class="form-check-input" id="final_acknowledgement_check">
+                            <label class="form-check-label fw-bold text-info-emphasis" for="final_acknowledgement_check">
+                                I have read and understand the contents of the job hazard analysis and the controls required to mitigate the risks from the identified hazards. <span class="text-danger">*</span>
+                            </label>
+                        </div>
+                        <p class="validation-error hidden" style="display: none;">Final acknowledgement is required for submission.</p>
+                    </div>
+
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="submit-btn" class="btn btn-primary btn-lg w-100 py-3 shadow-sm" disabled>
+                        Review Required Fields to Enable Submission
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+
+    
+
+    <script>
+        // --- Core Configuration and Setup ---
+        const FORM_KEY = 'jhaFormDraftState';
+        const form = document.getElementById('jha-form');
+        const submitButton = document.getElementById('submit-btn');
+        const saveStatus = document.getElementById('save-text');
+        const messageBox = document.getElementById('message-box');
+
+        // Helper to show/hide status message
+        const showMessage = (text, type) => {
+            messageBox.textContent = text;
+            messageBox.classList.remove('d-none', 'alert-danger', 'alert-success', 'alert-info', 'alert-warning');
+            
+            if (type === 'success') {
+                messageBox.classList.add('alert-success');
+            } else if (type === 'error') {
+                messageBox.classList.add('alert-danger');
+            } else if (type === 'info') {
+                messageBox.classList.add('alert-info');
+            }
+            messageBox.style.display = 'block';
+            
+            // Message box persists for 5 seconds
+            setTimeout(() => messageBox.style.display = 'none', 5000);
+        };
+
+        // --- 1. Dynamic Form Validation and Submission Toggling ---
+
+        const validateField = (input) => {
+            let isFieldValid = true;
+            // Use closest to find the container that holds both the input and the error message
+            const container = input.closest('.col-md-4, .form-check, .p-4');
+            const errorElement = container ? container.querySelector('.validation-error') : null;
+            
+            // Checkboxes validation (used for final_acknowledgement and steps)
+            if (input.type === 'checkbox' && input.required) {
+                isFieldValid = input.checked;
+                
+                if (!isFieldValid) {
+                    if (errorElement) errorElement.style.display = 'block';
+                } else {
+                    if (errorElement) errorElement.style.display = 'none';
+                }
+                
+                // Add/remove invalid style on the checkbox input itself (if needed)
+                input.classList.toggle('is-invalid-custom', !isFieldValid);
+
+            }
+            
+            // Text inputs validation
+            if ((input.type === 'text' || input.type === 'email') && input.required) {
+                isFieldValid = input.value.trim().length > 0;
+                
+                if (!isFieldValid) {
+                    input.classList.add('is-invalid-custom');
+                    if (errorElement) errorElement.style.display = 'block';
+                } else {
+                    input.classList.remove('is-invalid-custom');
+                    if (errorElement) errorElement.style.display = 'none';
+                }
+            }
+            return isFieldValid;
+        };
+
+        const checkFormValidity = () => {
+            let isFormValid = true;
+            
+            // Only check required fields for overall form validity
+            const requiredInputs = form.querySelectorAll('[required]');
+
+            requiredInputs.forEach(input => {
+                // Run validation to update visuals and check state
+                if (!validateField(input)) {
+                    isFormValid = false;
+                }
+            });
+
+            submitButton.disabled = !isFormValid;
+            submitButton.textContent = isFormValid ? 'Submit JHA and Acknowledge Risks' : 'Review Required Fields to Enable Submission';
+            return isFormValid;
+        };
+
+        // --- 2. Auto-Save Logic (Simulating Database Update) ---
+
+        const saveFormState = () => {
+            const formData = {};
+            // Iterate over all form elements
+            form.querySelectorAll('input, select, textarea').forEach(input => {
+                if (input.name) {
+                    if (input.type === 'checkbox') {
+                        formData[input.name] = input.checked;
+                    } else {
+                        formData[input.name] = input.value;
+                    }
+                }
+            });
+
+            // Simulate storing data in the 'database' (localStorage)
+            localStorage.setItem(FORM_KEY, JSON.stringify(formData));
+            
+            saveStatus.textContent = 'Draft automatically saved: ' + new Date().toLocaleTimeString();
+        };
+
+        const loadFormState = () => {
+            const savedData = localStorage.getItem(FORM_KEY);
+            if (savedData) {
+                const formData = JSON.parse(savedData);
+                
+                // Loop through saved data and set form field values
+                Object.keys(formData).forEach(key => {
+                    const input = form.elements[key];
+                    if (input) {
+                        if (input.type === 'checkbox') {
+                            input.checked = formData[key];
+                        } else {
+                            input.value = formData[key] || '';
+                        }
+                    }
+                });
+                showMessage('Previous work draft loaded successfully. Continue filling out the form.', 'info');
+                saveStatus.textContent = 'Draft loaded from session: ' + new Date().toLocaleTimeString();
+            } else {
+                saveStatus.textContent = 'Initial state. Start typing to auto-save draft.';
+            }
+            checkFormValidity();
+        };
+
+        // --- 3. AJAX Submission Simulation ---
+
+        const handleSubmission = async (e) => {
+            e.preventDefault();
+
+            // Re-validate everything one last time
+            if (!checkFormValidity()) {
+                showMessage('Please correct the highlighted errors before submitting.', 'error');
+                return;
+            }
+
+            // Disable UI during submission (AJAX in progress)
+            submitButton.disabled = true;
+            submitButton.textContent = 'Submitting Data (Simulated AJAX)...';
+            submitButton.classList.add('btn-warning');
+
+            try {
+                // Simulate the AJAX POST request and network delay to PHP/MySQL backend
+                await new Promise(resolve => setTimeout(resolve, 2500)); // 2.5 second delay
+
+                // Clear the local draft storage (simulating successful database commit)
+                localStorage.removeItem(FORM_KEY);
+                
+                // *** CONFIRMATION MESSAGE CHANGE APPLIED HERE ***
+                showMessage('JHA Form Saved Successfully!', 'success');
+                
+                // Reset the form
+                form.reset();
+                
+            } catch (error) {
+                // Simulate network or server error
+                showMessage('Submission failed due to a simulated network error. Your draft remains saved automatically.', 'error');
+                
+            } finally {
+                // Re-enable and reset button state
+                submitButton.classList.remove('btn-warning');
+                submitButton.disabled = false;
+                checkFormValidity(); // Re-check validity (should disable button after reset)
+            }
+        };
+
+        // --- Event Listeners and Initialization ---
+
+        const initApp = () => {
+            // Load any existing draft data
+            loadFormState();
+
+            // Event listener for auto-save and dynamic validation (on input/change)
+            form.addEventListener('input', (e) => {
+                // Dynamic Validation
+                if (e.target.required || e.target.type === 'text' || e.target.type === 'checkbox') {
+                    validateField(e.target);
+                }
+                checkFormValidity();
+                
+                // Auto-Save - use a slight delay for performance on rapid typing
+                saveFormState();
+            });
+
+            // Handle submission event
+            form.addEventListener('submit', handleSubmission);
+
+            // Initial check to update button state
+            checkFormValidity();
+        };
+
+        // Initialize the application when the page loads
+        document.addEventListener('DOMContentLoaded', initApp);
+
+    </script>
+</body>
+</html>
